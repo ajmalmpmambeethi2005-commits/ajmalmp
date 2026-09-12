@@ -1,10 +1,16 @@
-def isPerfectSquare(num):
-    for i in range(1, num + 1):
-        if i * i == num:
-            return True
+from flask import Flask, render_template, request
 
-    return False
+app = Flask(__name__)
 
+@app.route("/")
+def home():
+    return render_template("upload.html")
 
-print(isPerfectSquare(16))
-print(isPerfectSquare(14))
+@app.route("/upload", methods=["POST"])
+def upload():
+    file = request.files["myfile"]
+
+    return "You uploaded: " + file.filename
+
+if __name__ == "__main__":
+    app.run(debug=True)
