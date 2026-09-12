@@ -1,23 +1,18 @@
-def is_valid_ipv4(ip):
-    parts = ip.split(".")
+from flask import Flask, render_template, request
 
-    if len(parts) != 4:
-        return False
+app = Flask(__name__)
 
-    for part in parts:
-        if not part.isdigit():
-            return False
+@app.route("/")
+def home():
+    return render_template("upload1.html")
 
-        number = int(part)
+@app.route("/upload", methods=["POST"])
+def upload():
+    file = request.files["file"]
 
-        if number < 0 or number > 255:
-            return False
+    content = file.read().decode("utf-8")
 
-    return True
+    return content.replace("\n","<br>")
 
-
-print(is_valid_ipv4("1.2.3.4"))
-print(is_valid_ipv4("123.45.67.89"))
-print(is_valid_ipv4("1.2.3"))
-print(is_valid_ipv4("1.2.3.4.5"))
-print(is_valid_ipv4("123.456.78.90"))
+if __name__ == "__main__":
+    app.run(debug=True)
